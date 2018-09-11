@@ -23,6 +23,8 @@ class MessageResponder
     when 'ГВС'
       fill_hot_water_reading
       answer_with_message("Заполнил ГВС")
+    else
+      answer_with_error_message
     end
   end
 
@@ -34,6 +36,10 @@ class MessageResponder
 
   def answer_with_farewell_message
     answer_with_message I18n.t('farewell_message')
+  end
+
+  def answer_with_error_message
+    answer_with_message I18n.t('error_message')
   end
 
   def answer_with_message(text)
