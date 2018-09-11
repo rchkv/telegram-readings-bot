@@ -1,5 +1,6 @@
 require 'active_record'
 require './lib/message_sender'
+require './lib/readings_sender'
 
 class MessageResponder
   attr_reader :message
@@ -16,6 +17,8 @@ class MessageResponder
       answer_with_greeting_message
     when '/stop'
       answer_with_farewell_message
+    when '/open'
+      ReadingsSender.new.open_site
     end
   end
 
