@@ -1,11 +1,8 @@
 require 'logger'
 
-# require './lib/database_connector'
-
 class AppConfigurator
   def configure
     setup_i18n
-    # setup_database
   end
 
   def get_token
@@ -23,8 +20,4 @@ class AppConfigurator
     I18n.locale = :en
     I18n.backend.load_translations
   end
-
-  # def setup_database
-  #   DatabaseConnector.establish_connection
-  # end
 end

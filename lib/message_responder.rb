@@ -1,4 +1,4 @@
-require './models/user'
+require 'active_record'
 require './lib/message_sender'
 
 class MessageResponder
