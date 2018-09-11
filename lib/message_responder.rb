@@ -17,8 +17,12 @@ class MessageResponder
       answer_with_greeting_message
     when '/stop'
       answer_with_farewell_message
-    when '/open'
-      ReadingsSender.new.open_site
+    when 'open'
+      login_to_site
+      answer_with_message("Сайт открыл, заходи :)")
+    when 'ГВС'
+      fill_hot_water_reading
+      answer_with_message("Заполнил ГВС")
     end
   end
 
@@ -34,5 +38,13 @@ class MessageResponder
 
   def answer_with_message(text)
     MessageSender.new(bot: bot, chat: message.chat, text: text).send
+  end
+
+  def login_to_site
+    ReadingsSender.new.open_site_and_login
+  end
+
+  def fill_hot_water_reading
+    ReadingsSender.new.fill_hot_water_reading
   end
 end

@@ -3,6 +3,9 @@ require 'capybara/dsl'
 require 'capybara/poltergeist'
 require './lib/app_configurator'
 
+HOME_PAGE = 'https://ek-territory.ru'
+METERS_PAGE = 'https://ek-territory.ru/office/meters'
+
 class ReadingsSender
   include Capybara::DSL
 
@@ -10,10 +13,16 @@ class ReadingsSender
     Capybara.default_driver = :poltergeist
   end
 
-  def open_site
-    link = 'https://ek-territory.ru'
-    visit link
+  def open_site_and_login
+    visit HOME_PAGE
     login
+  end
+
+  def fill_hot_water_reading
+    visit_meters_page
+    within(:xpath, '//tbody//tr[6]//td[5]') do
+      find(:xpath, 'input').set('123123')
+    end
   end
 
   private
@@ -30,4 +39,15 @@ class ReadingsSender
     end
     page.has_content?('Моя информация')
   end
+
+  def visit_meters_page
+    visit METERS_PAGE
+    page.has_content?('Перечень счетчиков')
+  end
+
+  def debug
+    print page.html
+    save_screenshot(full: true)
+  end
+
 end
