@@ -24,13 +24,13 @@ class MessageResponder
 
   def respond
     if @state[:is_hot_water]
-      respond_hot_water
+      fill_hot_water
     elsif @state[:is_cold_water]
-      respond_cold_water
+      fill_cold_water
     elsif @state[:is_day_energy]
-      respond_day_energy
+      fill_day_energy
     elsif @state[:is_night_energy]
-      respond_night_energy
+      fill_night_energy
     else
       respond_general
     end
@@ -58,25 +58,25 @@ class MessageResponder
     end
   end
 
-  def respond_hot_water
+  def fill_hot_water
     fill_hot_water_reading(message.text)
     answer_with_message_type('hot_water_reading_filled')
     @state[:is_hot_water] = false
   end
 
-  def respond_cold_water
+  def fill_cold_water
     fill_cold_water_reading(message.text)
     answer_with_message_type('cold_water_reading_filled')
     @state[:is_cold_water] = false
   end
 
-  def respond_day_energy
+  def fill_day_energy
     fill_day_energy_reading(message.text)
     answer_with_message_type('day_energy_reading_filled')
     @state[:is_day_energy] = false
   end
 
-  def respond_night_energy
+  def fill_night_energy
     fill_night_energy_reading(message.text)
     answer_with_message_type('night_energy_reading_filled')
     @state[:is_night_energy] = false

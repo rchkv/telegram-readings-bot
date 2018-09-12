@@ -36,7 +36,6 @@ class ReadingsSender
   def fill_night_energy_reading(reading)
     visit METERS_PAGE if current_url != METERS_PAGE
     fill_reading('//tbody//tr[5]//td[5]', reading)
-    debug
   end
 
   private
