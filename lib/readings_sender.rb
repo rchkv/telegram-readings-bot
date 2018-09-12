@@ -18,10 +18,10 @@ class ReadingsSender
     login
   end
 
-  def fill_hot_water_reading
+  def fill_hot_water_reading(reading)
     visit_meters_page
     within(:xpath, '//tbody//tr[6]//td[5]') do
-      find(:xpath, 'input').set('123123')
+      find(:xpath, 'input').set(reading)
     end
   end
 
