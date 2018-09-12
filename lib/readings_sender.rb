@@ -20,9 +20,7 @@ class ReadingsSender
 
   def fill_hot_water_reading(reading)
     visit_meters_page
-    within(:xpath, '//tbody//tr[6]//td[5]') do
-      find(:xpath, 'input').set(reading)
-    end
+    fill_reading('//tbody//tr[6]//td[5]', reading)
   end
 
   private
@@ -45,9 +43,14 @@ class ReadingsSender
     page.has_content?('Перечень счетчиков')
   end
 
+  def fill_reading(input_xpath, reading)
+    within(:xpath, input_xpath) do
+      find(:xpath, 'input').set(reading)
+    end
+  end
+
   def debug
     print page.html
     save_screenshot(full: true)
   end
-
 end
