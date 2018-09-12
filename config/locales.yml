@@ -3,3 +3,4 @@ en:
   browser_open: "Сайт открыл, заходи :)"
   water_reading: "Вводи показание — только целую часть, до запятой."
   hot_water_reading_filled: "Заполнил ГВС"
+  cold_water_reading_filled: "Заполнил ХВС"

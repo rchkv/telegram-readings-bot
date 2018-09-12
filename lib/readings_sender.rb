@@ -19,8 +19,15 @@ class ReadingsSender
   end
 
   def fill_hot_water_reading(reading)
-    visit_meters_page
+    visit METERS_PAGE if current_url != METERS_PAGE
     fill_reading('//tbody//tr[6]//td[5]', reading)
+    debug
+  end
+
+  def fill_cold_water_reading(reading)
+    visit METERS_PAGE if current_url != METERS_PAGE
+    fill_reading('//tbody//tr[2]//td[5]', reading)
+    debug
   end
 
   private
@@ -38,15 +45,14 @@ class ReadingsSender
     page.has_content?('Моя информация')
   end
 
-  def visit_meters_page
-    visit METERS_PAGE
-    page.has_content?('Перечень счетчиков')
-  end
-
   def fill_reading(input_xpath, reading)
     within(:xpath, input_xpath) do
       find(:xpath, 'input').set(reading)
     end
+  end
+
+  def current_url
+    Capybara.current_url
   end
 
   def debug

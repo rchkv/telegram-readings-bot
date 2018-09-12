@@ -23,8 +23,10 @@ class MessageResponder
   end
 
   def respond
-    if @state[:is_gvs]
-      respond_gvs
+    if @state[:is_hot_water]
+      respond_hot_water
+    elsif @state[:is_cold_water]
+      respond_cold_water
     else
       respond_general
     end
@@ -36,17 +38,26 @@ class MessageResponder
       login_to_site
       answer_with_message_type('browser_open')
     when 'ГВС'
-      @state[:is_gvs] = true
+      @state[:is_hot_water] = true
+      answer_with_message_type('water_reading')
+    when 'ХВС'
+      @state[:is_cold_water] = true
       answer_with_message_type('water_reading')
     else
       answer_with_message_type('error')
     end
   end
 
-  def respond_gvs
+  def respond_hot_water
     fill_hot_water_reading(message.text)
     answer_with_message_type('hot_water_reading_filled')
-    @state[:is_gvs] = false
+    @state[:is_hot_water] = false
+  end
+
+  def respond_cold_water
+    fill_cold_water_reading(message.text)
+    answer_with_message_type('cold_water_reading_filled')
+    @state[:is_cold_water] = false
   end
 
   private
@@ -65,5 +76,9 @@ class MessageResponder
 
   def fill_hot_water_reading(reading)
     ReadingsSender.new.fill_hot_water_reading(reading)
+  end
+
+  def fill_cold_water_reading(reading)
+    ReadingsSender.new.fill_cold_water_reading(reading)
   end
 end
