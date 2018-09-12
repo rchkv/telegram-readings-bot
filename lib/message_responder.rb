@@ -34,25 +34,25 @@ class MessageResponder
     case message.text
     when 'open'
       login_to_site
-      answer_with_message("Сайт открыл, заходи :)")
+      answer_with_message_type('browser_open')
     when 'ГВС'
       @state[:is_gvs] = true
-      answer_with_message("Вводи показание")
+      answer_with_message_type('water_reading')
     else
-      answer_with_error_message
+      answer_with_message_type('error')
     end
   end
 
   def respond_gvs
     fill_hot_water_reading(message.text)
-    answer_with_message("Заполнил ГВС")
+    answer_with_message_type('hot_water_reading_filled')
     @state[:is_gvs] = false
   end
 
   private
 
-  def answer_with_error_message
-    answer_with_message I18n.t('error_message')
+  def answer_with_message_type(type)
+    answer_with_message I18n.t(type)
   end
 
   def answer_with_message(text)

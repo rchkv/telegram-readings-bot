@@ -1,4 +1,5 @@
 en:
-  greeting_message: "Hi! Telegram is awesome!"
-  farewell_message: "Bye! I'll miss you :("
-  error_message: "Не знаю такой команды"
+  error: "Не знаю такой команды"
+  browser_open: "Сайт открыл, заходи :)"
+  water_reading: "Вводи показание — только целую часть, до запятой."
+  hot_water_reading_filled: "Заполнил ГВС"
