@@ -27,6 +27,10 @@ class MessageResponder
       respond_hot_water
     elsif @state[:is_cold_water]
       respond_cold_water
+    elsif @state[:is_day_energy]
+      respond_day_energy
+    elsif @state[:is_night_energy]
+      respond_night_energy
     else
       respond_general
     end
@@ -39,10 +43,16 @@ class MessageResponder
       answer_with_message_type('browser_open')
     when 'ГВС'
       @state[:is_hot_water] = true
-      answer_with_message_type('water_reading')
+      answer_with_message_type('fill_reading_help')
     when 'ХВС'
       @state[:is_cold_water] = true
-      answer_with_message_type('water_reading')
+      answer_with_message_type('fill_reading_help')
+    when 'Э1'
+      @state[:is_day_energy] = true
+      answer_with_message_type('fill_reading_help')
+    when 'Э2'
+      @state[:is_night_energy] = true
+      answer_with_message_type('fill_reading_help')
     else
       answer_with_message_type('error')
     end
@@ -58,6 +68,18 @@ class MessageResponder
     fill_cold_water_reading(message.text)
     answer_with_message_type('cold_water_reading_filled')
     @state[:is_cold_water] = false
+  end
+
+  def respond_day_energy
+    fill_day_energy_reading(message.text)
+    answer_with_message_type('day_energy_reading_filled')
+    @state[:is_day_energy] = false
+  end
+
+  def respond_night_energy
+    fill_night_energy_reading(message.text)
+    answer_with_message_type('night_energy_reading_filled')
+    @state[:is_night_energy] = false
   end
 
   private
@@ -80,5 +102,13 @@ class MessageResponder
 
   def fill_cold_water_reading(reading)
     ReadingsSender.new.fill_cold_water_reading(reading)
+  end
+
+  def fill_day_energy_reading(reading)
+    ReadingsSender.new.fill_day_energy_reading(reading)
+  end
+
+  def fill_night_energy_reading(reading)
+    ReadingsSender.new.fill_night_energy_reading(reading)
   end
 end

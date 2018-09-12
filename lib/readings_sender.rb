@@ -21,12 +21,21 @@ class ReadingsSender
   def fill_hot_water_reading(reading)
     visit METERS_PAGE if current_url != METERS_PAGE
     fill_reading('//tbody//tr[6]//td[5]', reading)
-    debug
   end
 
   def fill_cold_water_reading(reading)
     visit METERS_PAGE if current_url != METERS_PAGE
     fill_reading('//tbody//tr[2]//td[5]', reading)
+  end
+
+  def fill_day_energy_reading(reading)
+    visit METERS_PAGE if current_url != METERS_PAGE
+    fill_reading('//tbody//tr[4]//td[5]', reading)
+  end
+
+  def fill_night_energy_reading(reading)
+    visit METERS_PAGE if current_url != METERS_PAGE
+    fill_reading('//tbody//tr[5]//td[5]', reading)
     debug
   end
 

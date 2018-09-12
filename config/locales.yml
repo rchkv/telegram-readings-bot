@@ -1,6 +1,8 @@
 en:
   error: "Не знаю такой команды"
   browser_open: "Сайт открыл, заходи :)"
-  water_reading: "Вводи показание — только целую часть, до запятой."
+  fill_reading_help: "Вводи показание — только целую часть, до запятой."
   hot_water_reading_filled: "Заполнил ГВС"
   cold_water_reading_filled: "Заполнил ХВС"
+  day_energy_reading_filled: "Заполнил электроэнергию 1 (день)"
+  night_energy_reading_filled: "Заполнил электроэнергию 2 (ночь)"
