@@ -38,19 +38,21 @@ class MessageResponder
 
   def respond_general
     case message.text
+    when '/start'
+      answer_with_default_answers('start_bot_message')
     when 'open'
       login_to_site
-      answer_with_message_type('browser_open')
+      answer_with_default_answers('browser_open')
     when 'ГВС'
       @state[:is_hot_water] = true
       answer_with_message_type('fill_reading_help')
     when 'ХВС'
       @state[:is_cold_water] = true
       answer_with_message_type('fill_reading_help')
-    when 'Э1'
+    when 'Электроэнергия (день)'
       @state[:is_day_energy] = true
       answer_with_message_type('fill_reading_help')
-    when 'Э2'
+    when 'Электроэнергия (ночь)'
       @state[:is_night_energy] = true
       answer_with_message_type('fill_reading_help')
     else
@@ -90,6 +92,10 @@ class MessageResponder
 
   def answer_with_message(text)
     MessageSender.new(bot: bot, chat: message.chat, text: text).send
+  end
+
+  def answer_with_default_answers(message_type)
+    MessageSender.new(bot: bot, chat: message.chat, text: I18n.t(message_type)).send_with_answers
   end
 
   def login_to_site

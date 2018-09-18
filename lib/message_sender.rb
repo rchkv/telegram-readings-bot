@@ -1,4 +1,3 @@
-require './lib/reply_markup_formatter'
 require './lib/app_configurator'
 
 class MessageSender
@@ -17,20 +16,18 @@ class MessageSender
   end
 
   def send
-    if reply_markup
-      bot.api.send_message(chat_id: chat.id, text: text, reply_markup: reply_markup)
-    else
-      bot.api.send_message(chat_id: chat.id, text: text)
-    end
+    bot.api.send_message(chat_id: chat.id, text: text)
 
     logger.debug "sending '#{text}' to #{chat.username}"
   end
 
-  private
+  def send_with_answers
+    answers =
+      Telegram::Bot::Types::ReplyKeyboardMarkup
+      .new(keyboard: [['🚿 Горячая вода', '🚰 Холодная вода'], ['💡 Электроэнергия (день)', '💡 Электроэнергия (ночь)'], ['🚀 Отправить']])
 
-  def reply_markup
-    if answers
-      ReplyMarkupFormatter.new(answers).get_markup
-    end
+    bot.api.send_message(chat_id: chat.id, text: text, reply_markup: answers)
+
+    logger.debug "sending '#{text}' to #{chat.username}"
   end
 end

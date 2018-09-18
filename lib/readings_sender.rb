@@ -38,6 +38,11 @@ class ReadingsSender
     fill_reading('//tbody//tr[5]//td[5]', reading)
   end
 
+  def send_readings
+    find('#send_button')
+    page.has_content?('click Операция выполнена!')
+  end
+
   private
 
   def login
