@@ -39,20 +39,20 @@ class MessageResponder
   def respond_general
     case message.text
     when '/start'
-      answer_with_default_answers('start_bot_message')
-    when 'open'
+      answer_with_start_answer
+    when 'Начнём вводить показания'
       login_to_site
-      answer_with_default_answers('browser_open')
-    when 'ГВС'
+      answer_with_readings_types_answers
+    when '🚿 Горячая вода'
       @state[:is_hot_water] = true
       answer_with_message_type('fill_reading_help')
-    when 'ХВС'
+    when '🚰 Холодная вода'
       @state[:is_cold_water] = true
       answer_with_message_type('fill_reading_help')
-    when 'Электроэнергия (день)'
+    when '💡 Электроэнергия (день)'
       @state[:is_day_energy] = true
       answer_with_message_type('fill_reading_help')
-    when 'Электроэнергия (ночь)'
+    when '💡 Электроэнергия (ночь)'
       @state[:is_night_energy] = true
       answer_with_message_type('fill_reading_help')
     else
@@ -94,8 +94,12 @@ class MessageResponder
     MessageSender.new(bot: bot, chat: message.chat, text: text).send
   end
 
-  def answer_with_default_answers(message_type)
-    MessageSender.new(bot: bot, chat: message.chat, text: I18n.t(message_type)).send_with_answers
+  def answer_with_readings_types_answers
+    MessageSender.new(bot: bot, chat: message.chat, text: I18n.t('wait_for_reading')).answer_with_readings_types_answers
+  end
+
+  def answer_with_start_answer
+    MessageSender.new(bot: bot, chat: message.chat, text: I18n.t('start_bot_message')).answer_with_start_answer
   end
 
   def login_to_site
