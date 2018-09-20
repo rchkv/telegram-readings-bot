@@ -41,6 +41,7 @@ class ReadingsSender
   def send_readings
     # find('#send_button')
     # page.has_content?('click Операция выполнена!')
+    debug
   end
 
   private

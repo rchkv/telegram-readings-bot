@@ -23,14 +23,14 @@ class MessageResponder
   end
 
   def respond
-    if @state[:is_hot_water]
-      fill_hot_water
-    elsif @state[:is_cold_water]
+    if @state[:is_cold_water]
       fill_cold_water
     elsif @state[:is_day_energy]
       fill_day_energy
     elsif @state[:is_night_energy]
       fill_night_energy
+    elsif @state[:is_hot_water]
+      fill_hot_water
     else
       respond_general
     end
@@ -55,6 +55,9 @@ class MessageResponder
     when '💡 Электроэнергия (ночь)'
       @state[:is_night_energy] = true
       answer_with_message_type('fill_reading_help')
+    when 'Да!'
+      send_readings
+      answer_with_message_type('readings_sended')
     else
       answer_with_message_type('error')
     end
@@ -64,24 +67,48 @@ class MessageResponder
     fill_hot_water_reading(message.text)
     answer_with_message_type('hot_water_reading_filled')
     @state[:is_hot_water] = false
+    @state[:hot_water_filled] = true
+    if can_send_readings?
+      ready_for_send_readings
+    end
   end
 
   def fill_cold_water
     fill_cold_water_reading(message.text)
     answer_with_message_type('cold_water_reading_filled')
     @state[:is_cold_water] = false
+    @state[:cold_water_filled] = true
+    if can_send_readings?
+      ready_for_send_readings
+    end
   end
 
   def fill_day_energy
     fill_day_energy_reading(message.text)
     answer_with_message_type('day_energy_reading_filled')
     @state[:is_day_energy] = false
+    @state[:day_energy_filled] = true
+    if can_send_readings?
+      ready_for_send_readings
+    end
   end
 
   def fill_night_energy
     fill_night_energy_reading(message.text)
     answer_with_message_type('night_energy_reading_filled')
     @state[:is_night_energy] = false
+    @state[:nigh_energy_filled] = true
+    if can_send_readings?
+      ready_for_send_readings
+    end
+  end
+
+  def ready_for_send_readings
+    answer_with_send_readings_answers
+    @state[:hot_water_filled]   = false
+    @state[:cold_water_filled]  = false
+    @state[:day_energy_filled]  = false
+    @state[:nigh_energy_filled] = false
   end
 
   private
@@ -102,6 +129,10 @@ class MessageResponder
     MessageSender.new(bot: bot, chat: message.chat, text: I18n.t('start_bot_message')).answer_with_start_answer
   end
 
+  def answer_with_send_readings_answers
+    MessageSender.new(bot: bot, chat: message.chat, text: I18n.t('wait_for_send_readings')).answer_with_send_readings_answers
+  end
+
   def login_to_site
     ReadingsSender.new.open_site_and_login
   end
@@ -120,5 +151,13 @@ class MessageResponder
 
   def fill_night_energy_reading(reading)
     ReadingsSender.new.fill_night_energy_reading(reading)
+  end
+
+  def send_readings
+    ReadingsSender.new.send_readings
+  end
+
+  def can_send_readings?
+    @state[:hot_water_filled] && @state[:cold_water_filled] && @state[:day_energy_filled] && @state[:nigh_energy_filled]
   end
 end
