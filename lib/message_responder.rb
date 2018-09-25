@@ -71,6 +71,7 @@ class MessageResponder
   end
 
   def fill_hot_water
+    return clear_states if message_is_cancel?
     fill_hot_water_reading(message.text)
     answer_with_message_type('hot_water_reading_filled')
     @state[:is_hot_water] = false
@@ -81,6 +82,7 @@ class MessageResponder
   end
 
   def fill_cold_water
+    return clear_states if message_is_cancel?
     fill_cold_water_reading(message.text)
     answer_with_message_type('cold_water_reading_filled')
     @state[:is_cold_water] = false
@@ -91,6 +93,7 @@ class MessageResponder
   end
 
   def fill_day_energy
+    return clear_states if message_is_cancel?
     fill_day_energy_reading(message.text)
     answer_with_message_type('day_energy_reading_filled')
     @state[:is_day_energy] = false
@@ -101,6 +104,7 @@ class MessageResponder
   end
 
   def fill_night_energy
+    return clear_states if message_is_cancel?
     fill_night_energy_reading(message.text)
     answer_with_message_type('night_energy_reading_filled')
     @state[:is_night_energy] = false
@@ -116,18 +120,6 @@ class MessageResponder
     @state[:cold_water_filled]  = false
     @state[:day_energy_filled]  = false
     @state[:night_energy_filled] = false
-  end
-
-  def clear_states
-    @state[:hot_water_filled]   = false
-    @state[:cold_water_filled]  = false
-    @state[:day_energy_filled]  = false
-    @state[:night_energy_filled] = false
-    @state[:is_night_energy]    = false
-    @state[:is_day_energy]      = false
-    @state[:is_cold_water]      = false
-    @state[:is_hot_water]       = false
-    reset_session
   end
 
   private
@@ -178,6 +170,15 @@ class MessageResponder
 
   def reset_session
     ReadingsSender.new.reset
+  end
+
+  def clear_states
+    @state.clear
+    reset_session
+  end
+
+  def message_is_cancel?
+    message.text == 'Отменить всё к чертям'
   end
 
   def can_send_readings?
