@@ -23,7 +23,9 @@ class MessageResponder
   end
 
   def respond
-    if @state[:is_cold_water]
+    if message.from.username != 'antonrychkov'
+      answer_with_message_type('unknown_user')
+    elsif @state[:is_cold_water]
       fill_cold_water
     elsif @state[:is_day_energy]
       fill_day_energy
