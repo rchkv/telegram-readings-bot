@@ -127,7 +127,7 @@ class MessageResponder
     @state[:is_day_energy]      = false
     @state[:is_cold_water]      = false
     @state[:is_hot_water]       = false
-    ReadingsSender.new.reset
+    reset_session
   end
 
   private
@@ -174,6 +174,10 @@ class MessageResponder
 
   def send_readings
     ReadingsSender.new.send_readings
+  end
+
+  def reset_session
+    ReadingsSender.new.reset
   end
 
   def can_send_readings?
