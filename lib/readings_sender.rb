@@ -39,9 +39,13 @@ class ReadingsSender
   end
 
   def send_readings
+    debug
     # find('#send_button')
     # page.has_content?('click Операция выполнена!')
-    debug
+  end
+
+  def reset
+    Capybara.reset!
   end
 
   private

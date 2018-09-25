@@ -39,7 +39,7 @@ class MessageResponder
   def respond_general
     case message.text
     when '/start'
-      answer_with_start_answer
+      answer_with_start_button('start_bot_message')
     when 'Начнём вводить показания'
       login_to_site
       answer_with_readings_types_answers
@@ -57,7 +57,14 @@ class MessageResponder
       answer_with_message_type('fill_reading_help')
     when 'Да!'
       send_readings
-      answer_with_message_type('readings_sended')
+      answer_with_start_button('readings_sended')
+      clear_states
+    when 'Отменить всё к чертям'
+      clear_states
+      answer_with_start_button('reset')
+    when 'Я передумал'
+      clear_states
+      answer_with_start_button('reset')
     else
       answer_with_message_type('error')
     end
@@ -97,7 +104,7 @@ class MessageResponder
     fill_night_energy_reading(message.text)
     answer_with_message_type('night_energy_reading_filled')
     @state[:is_night_energy] = false
-    @state[:nigh_energy_filled] = true
+    @state[:night_energy_filled] = true
     if can_send_readings?
       ready_for_send_readings
     end
@@ -108,7 +115,19 @@ class MessageResponder
     @state[:hot_water_filled]   = false
     @state[:cold_water_filled]  = false
     @state[:day_energy_filled]  = false
-    @state[:nigh_energy_filled] = false
+    @state[:night_energy_filled] = false
+  end
+
+  def clear_states
+    @state[:hot_water_filled]   = false
+    @state[:cold_water_filled]  = false
+    @state[:day_energy_filled]  = false
+    @state[:night_energy_filled] = false
+    @state[:is_night_energy]    = false
+    @state[:is_day_energy]      = false
+    @state[:is_cold_water]      = false
+    @state[:is_hot_water]       = false
+    ReadingsSender.new.reset
   end
 
   private
@@ -125,8 +144,8 @@ class MessageResponder
     MessageSender.new(bot: bot, chat: message.chat, text: I18n.t('wait_for_reading')).answer_with_readings_types_answers
   end
 
-  def answer_with_start_answer
-    MessageSender.new(bot: bot, chat: message.chat, text: I18n.t('start_bot_message')).answer_with_start_answer
+  def answer_with_start_button(locale_type)
+    MessageSender.new(bot: bot, chat: message.chat, text: I18n.t(locale_type)).answer_with_start_button
   end
 
   def answer_with_send_readings_answers
@@ -158,6 +177,6 @@ class MessageResponder
   end
 
   def can_send_readings?
-    @state[:hot_water_filled] && @state[:cold_water_filled] && @state[:day_energy_filled] && @state[:nigh_energy_filled]
+    @state[:hot_water_filled] && @state[:cold_water_filled] && @state[:day_energy_filled] && @state[:night_energy_filled]
   end
 end
