@@ -6,15 +6,15 @@ class AppConfigurator
   end
 
   def get_token
-    YAML::load(IO.read('config/secrets.yml'))['telegram_bot_token']
+    ENV['TELEGRAM_BOT_TOKEN']
   end
 
   def get_login
-    YAML::load(IO.read('config/secrets.yml'))['site_login']
+    ENV['SITE_LOGIN']
   end
 
   def get_password
-    YAML::load(IO.read('config/secrets.yml'))['site_password']
+    ENV['SITE_PASSWORD']
   end
 
   def get_logger
