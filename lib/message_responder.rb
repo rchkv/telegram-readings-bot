@@ -23,7 +23,7 @@ class MessageResponder
   end
 
   def respond
-    if message.from.username != 'antonrychkov'
+    if ['antonrychkov', 'tveritina'].exclude?(message.from.username)
       answer_with_message_type('unknown_user')
     elsif @state[:is_cold_water]
       fill_cold_water
