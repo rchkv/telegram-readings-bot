@@ -23,8 +23,7 @@ class MessageResponder
   end
 
   def respond
-    return answer_with_message_type('unknown_user')
-      unless ['antonrychkov', 'tveritina'].include?(message.from.username)
+    return answer_with_message_type('unknown_user') unless ['antonrychkov', 'tveritina'].include?(message.from.username)
 
     if @state[:is_cold_water]
       fill_cold_water
