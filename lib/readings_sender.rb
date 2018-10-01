@@ -14,13 +14,13 @@ class ReadingsSender
   end
 
   def open_site_and_login
-    # visit HOME_PAGE
-    # login
+    visit HOME_PAGE
+    login
   end
 
   def fill_hot_water_reading(reading)
-    # visit METERS_PAGE if current_url != METERS_PAGE
-    # fill_reading('//tbody//tr[6]//td[5]', reading)
+    visit METERS_PAGE if current_url != METERS_PAGE
+    fill_reading('//tbody//tr[6]//td[5]', reading)
   end
 
   def fill_cold_water_reading(reading)
@@ -39,8 +39,8 @@ class ReadingsSender
   end
 
   def send_readings
-    # find('#send_button')
-    # page.has_content?('click Операция выполнена!')
+    find('#send_button')
+    page.has_content?('click Операция выполнена!')
   end
 
   def reset
