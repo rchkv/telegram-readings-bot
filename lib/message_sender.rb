@@ -50,4 +50,10 @@ class MessageSender
 
     logger.debug "sending '#{text}' to #{chat.username}"
   end
+
+  def send_image
+    bot.api.send_photo(chat_id: chat.id, photo: Faraday::UploadIO.new('./success_sent.jpg', 'image/jpeg'))
+
+    logger.debug "sending '#{text}' to #{chat.username}"
+  end
 end

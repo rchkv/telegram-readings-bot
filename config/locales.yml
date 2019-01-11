@@ -8,6 +8,6 @@ en:
   day_energy_reading_filled: "Заполнил электроэнергию 1 (день)"
   night_energy_reading_filled: "Заполнил электроэнергию 2 (ночь)"
   wait_for_send_readings: "Все показания заполнены. Отправляем?"
-  readings_sended: "Отправил! Не забудь внести показания через месяц."
+  readings_are_sended: "Отправил! Не забудь внести показания через месяц."
   reset: "Всё сбросил"
   unknown_user: "Я не буду с тобой говорить"

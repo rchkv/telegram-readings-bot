@@ -59,7 +59,8 @@ class MessageResponder
       answer_with_message_type('fill_reading_help')
     when 'Да!'
       send_readings
-      answer_with_start_button('readings_sended')
+      answer_with_start_button('readings_are_sended')
+      answer_with_image
       clear_states
     when 'Отменить всё к чертям'
       clear_states
@@ -132,6 +133,10 @@ class MessageResponder
 
   def answer_with_message(text)
     MessageSender.new(bot: bot, chat: message.chat, text: text).send
+  end
+
+  def answer_with_image
+    MessageSender.new(bot: bot, chat: message.chat).send_image
   end
 
   def answer_with_readings_types_answers

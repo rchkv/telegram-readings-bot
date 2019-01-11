@@ -39,8 +39,9 @@ class ReadingsSender
   end
 
   def send_readings
-    find('#send_button')
-    page.has_content?('Операция выполнена!')
+    find('#send_button').click
+    sleep(1)
+    create_success_sent_screenshot
   end
 
   def reset
@@ -77,8 +78,11 @@ class ReadingsSender
     Capybara.current_url
   end
 
+  def create_success_sent_screenshot
+    save_screenshot('success_sent.jpg', full: true)
+  end
+
   def debug
-    print page.html
-    save_screenshot(full: true)
+    save_screenshot( full: true)
   end
 end
